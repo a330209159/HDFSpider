@@ -7,6 +7,11 @@ from GetDateLink import sendHttpRequest
 
 
 def getPageLink(url):
+    """
+    获取本日期所有页对应的链接
+    :param url:本日期第一页的url
+    :return: 返回一个列表，此列表中包含当前日期所有页的链接
+    """
     baseURL ='https://www.haodf.com'
     html = sendHttpRequest(url)
     soup = BeautifulSoup(html,'html.parser')
@@ -19,6 +24,11 @@ def getPageLink(url):
 
 
 def getContentLink(pageurl):
+    """
+    获取索引页每条问答信息对应的链接
+    :param pageurl: 当前页的链接
+    :return: 返回一个列表，此列表包含当前页每条问答信息的链接
+    """
     html = sendHttpRequest(pageurl)
     soup = BeautifulSoup(html,'html.parser')
     contentlink = soup.find_all(class_= 'hh')
@@ -34,7 +44,7 @@ def getContentLink(pageurl):
 
     return ContentLinkList
 
-
+# 测试函数
 if __name__ == '__main__':
     for i in getPageLink('https://www.haodf.com/sitemap-zx/20181110_1/'):
         print(i)

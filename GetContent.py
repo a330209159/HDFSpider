@@ -7,6 +7,11 @@ import os
 
 
 def getContent(url):
+    """
+    负责爬取问答信息内容，并构造json格式的函数
+    :param url: 要爬取的问答页的链接
+    :return: 返回一个字典，此字典中包含此问答页的问答内容
+    """
     html = sendHttpRequest(url)
     soup = BeautifulSoup(html, 'html.parser')
 
@@ -40,12 +45,18 @@ def getContent(url):
 
 
 def export2Json(dictpath, fileid, content):
+    """
+    将页面内容提取到json中的函数
+    :param dictpath: 要提取json文件到的目录
+    :param fileid: 页面的id号
+    :param content: 包含页面内容的字典
+    """
     if not os.path.exists(dictpath):
         os.mkdir(dictpath)
     with open('{}/{}.json'.format(dictpath, fileid), 'w', encoding='utf-8') as fout:
         json.dump(content, fout, ensure_ascii=False, indent=4)
 
-
+# 用于测试本模块的函数
 if __name__ == '__main__':
     content = getContent(url='https://www.haodf.com/doctorteam/flow_team_6463903072.htm')
     export2Json(content)

@@ -7,6 +7,12 @@ from bs4 import BeautifulSoup
 
 
 def getLinkList(startdateStr, enddateStr):
+    """
+    获取指定日期段内的链接列表
+    :param startdateStr: 开始日期
+    :param enddateStr: 结束日期
+    :return: 返回一个指定日期内的链接列表
+    """
     enddate = datetime.datetime.strptime(enddateStr, '%Y%m%d')
     startdate = datetime.datetime.strptime(startdateStr, '%Y%m%d')
     nextday = startdate
@@ -20,6 +26,10 @@ def getLinkList(startdateStr, enddateStr):
 
 
 def getUserAgent():
+    """
+    从列表里随机获取一个UserAgent，避免被系统判为爬虫，同时构造headers
+    :return: 直接返回构造好的headers
+    """
     user_agent_list = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
         "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
@@ -59,6 +69,10 @@ def getUserAgent():
 
 
 def searchPage():
+    """
+    爬取当前年所有日期对应的链接
+    :return:返回一个字典，key是日期，而value是日期对应的链接
+    """
     url = 'https://www.haodf.com/sitemap-zx/2018/'
     html = sendHttpRequest(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -69,6 +83,11 @@ def searchPage():
 
 
 def sendHttpRequest(url):
+    """
+    调用requests库请求html网页
+    :param url: 要请求的网址
+    :return: 返回html源码
+    """
     headers = getUserAgent()
     try:
         html = requests.get(url, headers=headers, timeout=15).text
@@ -76,7 +95,7 @@ def sendHttpRequest(url):
         print('获取网页超时')
     return html
 
-
+# 本模块测试函数
 if __name__ == '__main__':
     linkmap = searchPage()
     dateStrList = getLinkList('20180930', '20181003')

@@ -9,13 +9,27 @@ import random
 import datetime
 import sys
 import getopt
-# test
+
 
 def crawl_1607052433(startdate, enddate):
+    """
+    本题目要求实现的函数，封装调用了关键函数crawSub
+    :param startdate: 开始日期
+    :param enddate: 结束日期
+    """
     crawSub(startdate,enddate)
 
 
 def crawSub(startdate,enddate,pagenum=0,eachnum=0,rfbp=0):
+    """
+    关键函数，用以统筹集成个个模块，并爬取内容
+    :param startdate: 开始日期
+    :param enddate: 结束日期
+    下面的参数均用于断点续爬
+    :param pagenum: 断点的页数 默认为0
+    :param eachnum: 断点的号数 默认为0
+    :param rfbp: 是否启用断点续爬 1为启用 0为关闭 默认为0
+    """
     linkmap = searchPage()
     dateStrList = getLinkList(startdate, enddate)
 
@@ -76,6 +90,7 @@ def crawSub(startdate,enddate,pagenum=0,eachnum=0,rfbp=0):
 def rfbp(lastnum, date):
     """
     resume from break-point
+    断点续爬函数
     """
     page = int(lastnum / 500)
     num = int(lastnum % 500)
@@ -88,6 +103,11 @@ def rfbp(lastnum, date):
 
 def cmdprocess(argv):
 
+    """
+    为了本程序的断点续爬方便在服务器上进行使用，特意写了控制台参数处理程序
+    使用方法为 Python Main.py -r -d <断点日期> -n <断点号数>
+    其中 -r 表示启用断点续爬
+    """
     date =''
     num = -1
     try:
